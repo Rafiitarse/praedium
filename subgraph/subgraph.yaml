@@ -8,11 +8,9 @@ dataSources:
     name: RWAToken
     network: sepolia
     source:
-      # TODO: replace with the deployed address printed by script/DeployAll.s.sol
-      address: "0x0000000000000000000000000000000000000001"
+      address: "0x53FfF7C20B6DBD66234D769d41EC4C1fA698e109"
       abi: RWAToken
-      # TODO: set to the deployment block after Sepolia deploy
-      startBlock: 0
+      startBlock: 11899800
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -38,11 +36,9 @@ dataSources:
     name: ComplianceRegistry
     network: sepolia
     source:
-      # TODO: replace with the deployed address printed by script/DeployAll.s.sol
-      address: "0x0000000000000000000000000000000000000002"
+      address: "0xC59Ae783679AD55b0d85b2a3F51aC3a652212dF5"
       abi: ComplianceRegistry
-      # TODO: set to the deployment block after Sepolia deploy
-      startBlock: 0
+      startBlock: 11899800
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -67,11 +63,9 @@ dataSources:
     name: AssetRegistry
     network: sepolia
     source:
-      # TODO: replace with the deployed address printed by script/DeployAll.s.sol
-      address: "0x0000000000000000000000000000000000000003"
+      address: "0xDbbB1D614C642707e92019828b884520357c772c"
       abi: AssetRegistry
-      # TODO: set to the deployment block after Sepolia deploy
-      startBlock: 0
+      startBlock: 11899800
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7

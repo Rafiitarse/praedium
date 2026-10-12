@@ -85,15 +85,13 @@ contract DeployAll is Script {
             new RWAToken("Real World Asset Token", "RWA", address(compliance), address(assets), assetId, admin);
         console2.log("RWAToken:", address(token));
 
-        // 5. Role grants (admin keeps DEFAULT_ADMIN_ROLE on all three)
-        // Only granted when distinct from the admin, which already holds DEFAULT_ADMIN_ROLE
-        // and could grant them later; avoids redundant grantRole calls on a single-key deploy.
-        if (officer != admin) {
-            compliance.grantRole(compliance.COMPLIANCE_OFFICER_ROLE(), officer);
-        }
-        if (minter != admin) {
-            token.grantRole(token.MINTER_ROLE(), minter);
-        }
+        // 5. Role grants — always grant to the configured holders. The
+        //    constructors only grant DEFAULT_ADMIN_ROLE, so the functional
+        //    roles must be granted here explicitly even when a holder equals
+        //    admin (single-owner setup). grantRole is idempotent.
+        compliance.grantRole(compliance.COMPLIANCE_OFFICER_ROLE(), officer);
+        token.grantRole(token.MINTER_ROLE(), minter);
+        token.grantRole(token.PAUSER_ROLE(), admin);
 
         vm.stopBroadcast();
 
