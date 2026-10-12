@@ -1,0 +1,52 @@
+# Deploys Praedium contracts to the target network and verifies them on Etherscan.
+# This workflow is MANUAL ONLY — trigger it from the Actions tab ("Run workflow").
+# It never runs on push or pull_request.
+#
+# Required GitHub repository secrets (Settings -> Secrets and variables -> Actions):
+#   SEPOLIA_RPC_URL      - Sepolia RPC endpoint used for broadcast and verification
+#   DEPLOYER_PRIVATE_KEY - funded deployer key that signs the broadcast
+#   ETHERSCAN_API_KEY    - Etherscan API key used by forge for contract verification
+
+name: CD
+
+on:
+  workflow_dispatch:
+    inputs:
+      network:
+        description: Target network
+        required: true
+        default: sepolia
+        type: choice
+        options:
+          - sepolia
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy to Sepolia
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+
+      # network input is currently informational: Sepolia is the only wired target.
+      # Add a new option above and a matching secrets-driven branch when mainnet lands.
+      - name: Deploy and verify
+        env:
+          DEPLOYER_PRIVATE_KEY: ${{ secrets.DEPLOYER_PRIVATE_KEY }}
+        run: |
+          forge script script/DeployAll.s.sol \
+            --rpc-url ${{ secrets.SEPOLIA_RPC_URL }} \
+            --broadcast \
+            --verify \
+            --etherscan-api-key ${{ secrets.ETHERSCAN_API_KEY }} \
+            -vvvv

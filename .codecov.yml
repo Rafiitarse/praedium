@@ -1,0 +1,14 @@
+# Codecov configuration - Foundry contract coverage only.
+coverage:
+  precision: 2
+  status:
+    project:
+      default:
+        target: auto
+        informational: true
+    patch: false
+
+ignore:
+  - "frontend/**"
+  - "lib/**"
+  - "test/**"
