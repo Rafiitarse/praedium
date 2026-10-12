@@ -147,6 +147,23 @@ export function Spinner({ className = '' }: { className?: string }) {
   );
 }
 
+/* ── Shared states ── */
+
+export function NotDeployed() {
+  return (
+    <PanelCard className="py-12 text-center">
+      <p className="text-slate-400">
+        Contracts are not deployed on this network yet. Run the CD workflow to deploy to
+        Sepolia, then set the addresses in{' '}
+        <code className="rounded bg-white/5 px-1 py-0.5 font-mono text-xs">
+          frontend/.env.local
+        </code>
+        .
+      </p>
+    </PanelCard>
+  );
+}
+
 /* ── Transaction status ── */
 
 export type TxState = 'idle' | 'pending' | 'success' | 'error';
