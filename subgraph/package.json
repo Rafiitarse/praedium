@@ -1,0 +1,16 @@
+{
+  "name": "praedium-subgraph",
+  "version": "1.0.0",
+  "private": true,
+  "description": "The Graph subgraph indexing the Praedium RWA contracts (RWAToken, ComplianceRegistry, AssetRegistry)",
+  "license": "MIT",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy rwa-assets"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "^0.98.1",
+    "@graphprotocol/graph-ts": "^0.38.2"
+  }
+}

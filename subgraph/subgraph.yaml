@@ -1,0 +1,91 @@
+specVersion: 1.0.0
+description: Indexes the Praedium RWA contracts — token transfers, investor compliance records, and asset provenance.
+schema:
+  file: ./schema.graphql
+dataSources:
+  # ── RWAToken: ERC-20 transfers + asset mint/burn ──
+  - kind: ethereum
+    name: RWAToken
+    network: sepolia
+    source:
+      # TODO: replace with the deployed address printed by script/DeployAll.s.sol
+      address: "0x0000000000000000000000000000000000000001"
+      abi: RWAToken
+      # TODO: set to the deployment block after Sepolia deploy
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Transfer
+        - Investor
+        - GlobalStat
+      abis:
+        - name: RWAToken
+          file: ./abis/RWAToken.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: AssetMinted(indexed uint256,indexed address,uint256)
+          handler: handleAssetMinted
+        - event: AssetBurned(indexed uint256,indexed address,uint256)
+          handler: handleAssetBurned
+      file: ./src/mappings.ts
+
+  # ── ComplianceRegistry: investor whitelist lifecycle ──
+  - kind: ethereum
+    name: ComplianceRegistry
+    network: sepolia
+    source:
+      # TODO: replace with the deployed address printed by script/DeployAll.s.sol
+      address: "0x0000000000000000000000000000000000000002"
+      abi: ComplianceRegistry
+      # TODO: set to the deployment block after Sepolia deploy
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Investor
+        - GlobalStat
+      abis:
+        - name: ComplianceRegistry
+          file: ./abis/ComplianceRegistry.json
+      eventHandlers:
+        - event: InvestorVerified(indexed address,uint64,uint16)
+          handler: handleInvestorVerified
+        - event: InvestorRevoked(indexed address)
+          handler: handleInvestorRevoked
+        - event: InvestorFrozen(indexed address,bool)
+          handler: handleInvestorFrozen
+      file: ./src/mappings.ts
+
+  # ── AssetRegistry: asset provenance and lifecycle ──
+  - kind: ethereum
+    name: AssetRegistry
+    network: sepolia
+    source:
+      # TODO: replace with the deployed address printed by script/DeployAll.s.sol
+      address: "0x0000000000000000000000000000000000000003"
+      abi: AssetRegistry
+      # TODO: set to the deployment block after Sepolia deploy
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Asset
+      abis:
+        - name: AssetRegistry
+          file: ./abis/AssetRegistry.json
+      eventHandlers:
+        - event: AssetRegistered(indexed uint256,bytes32,indexed address)
+          handler: handleAssetRegistered
+        - event: AssetUpdated(indexed uint256,bytes32,string,uint256,uint64)
+          handler: handleAssetUpdated
+        - event: AssetStatusChanged(indexed uint256,uint8)
+          handler: handleAssetStatusChanged
+      file: ./src/mappings.ts

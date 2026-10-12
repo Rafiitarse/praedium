@@ -1,0 +1,50 @@
+# Every ERC-20 style balance change on the RWA token, including the mint
+# (from = 0x0) and burn (to = 0x0) legs emitted by OpenZeppelin's _mint/_burn.
+# Transfer is inherited from ERC20, the two Asset* events are declared on
+# RWAToken itself.
+# @entity(immutable: true) — transfers are written once and never mutated.
+type Transfer @entity(immutable: true) {
+  id: ID!
+  from: Bytes!
+  to: Bytes!
+  value: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  txHash: Bytes!
+}
+
+# Compliance record for one address, plus the token balance tracked from the
+# RWAToken data sources. A single registry serves every RWA token, so the
+# balance here is the sum across all indexed RWAToken deployments.
+# @entity(immutable: false) — balance, verified and frozen change over time.
+type Investor @entity(immutable: false) {
+  id: ID!
+  verified: Boolean!
+  expiry: BigInt!
+  jurisdiction: BigInt!
+  frozen: Boolean!
+  balance: BigInt!
+}
+
+# Provenance record for a registered asset. `uri` is empty until the first
+# AssetUpdated event, which is the only event that carries it.
+# @entity(immutable: false) — uri and status change over the asset lifecycle.
+type Asset @entity(immutable: false) {
+  id: ID!
+  docHash: Bytes!
+  uri: String!
+  issuer: Bytes!
+  status: Int!
+  registeredAt: BigInt!
+}
+
+# Platform-wide counters. The id is always "global" — there is exactly one row.
+# @entity(immutable: false) — counters increment as events arrive.
+type GlobalStat @entity(immutable: false) {
+  id: ID!
+  totalTransfers: BigInt!
+  totalMinted: BigInt!
+  totalBurned: BigInt!
+  holderCount: Int!
+  investorCount: Int!
+}
