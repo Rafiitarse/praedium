@@ -1,20 +1,24 @@
-import { http, createConfig } from 'wagmi';
-import { mainnet, sepolia } from 'wagmi/chains';
-import { injected } from 'wagmi/connectors';
+import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
+import { sepolia } from '@reown/appkit/networks';
+import type { AppKitNetwork } from '@reown/appkit/networks';
 
+const projectId = process.env.NEXT_PUBLIC_REOWN_PROJECT_ID ?? '';
 const sepoliaRpcUrl = process.env.NEXT_PUBLIC_SEPOLIA_RPC_URL;
 
-export const wagmiConfig = createConfig({
-  chains: [mainnet, sepolia],
-  connectors: [injected()],
-  transports: {
-    [mainnet.id]: http(),
-    [sepolia.id]: http(sepoliaRpcUrl),
-  },
+// Point the Sepolia network at our configured public RPC endpoint.
+const sepoliaNetwork = sepoliaRpcUrl
+  ? ({
+      ...sepolia,
+      rpcUrls: { ...sepolia.rpcUrls, default: { http: [sepoliaRpcUrl] } },
+    } as AppKitNetwork)
+  : sepolia;
+
+export const networks = [sepoliaNetwork] as [AppKitNetwork];
+
+export const wagmiAdapter = new WagmiAdapter({
+  networks,
+  projectId,
+  ssr: true,
 });
 
-declare module 'wagmi' {
-  interface Register {
-    config: typeof wagmiConfig;
-  }
-}
+export const wagmiConfig = wagmiAdapter.wagmiConfig;
