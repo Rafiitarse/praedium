@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.28;
+pragma solidity ^0.8.28;
 
 /// @title IAssetRegistry
 /// @notice Minimal interface for the off-chain asset metadata registry consumed by RWA tokens.

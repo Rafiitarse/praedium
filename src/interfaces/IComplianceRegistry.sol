@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.28;
+pragma solidity ^0.8.28;
 
 /// @title IComplianceRegistry
 /// @notice Minimal interface for the investor-eligibility registry consumed by RWA tokens.
