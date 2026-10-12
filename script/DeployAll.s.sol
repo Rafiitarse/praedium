@@ -25,9 +25,24 @@ import {AssetRegistry} from "../src/AssetRegistry.sol";
 ///      Sepolia usage:
 ///        source .env
 ///        forge script script/DeployAll.s.sol --rpc-url sepolia --broadcast -vvvv
+///
+///      The admin keeps DEFAULT_ADMIN_ROLE on all three contracts — no role is granted to
+///      a second address unless it differs from the admin, keeping a single-key testnet
+///      deploy minimal. On mainnet the admin should be a multisig.
+/// @author Lintar Ar' Rafii
+/// @custom:security-contact arrafiilintar@gmail.com
 contract DeployAll is Script {
+    /// @notice Pre-execution hook required by forge script.
+    /// @dev Intentionally empty: every input comes from environment variables read in
+    ///      `run`, so there is nothing to set up beforehand.
     function setUp() public {}
 
+    /// @notice Execute the full deployment in dependency order.
+    /// @dev Reads all addresses and the asset URI from the environment (see the contract
+    ///      header). Broadcasts as the `DEPLOYER_PRIVATE_KEY` holder when one is set, and
+    ///      otherwise as `DEPLOYER_ADDRESS` — the anvil/local path, where the node signs
+    ///      on its own. Prints every deployed address and a summary of the role holders so
+    ///      the output can be copied straight into `frontend/lib/contracts.ts`.
     function run() public {
         uint256 deployerKey = vm.envOr("DEPLOYER_PRIVATE_KEY", uint256(0));
         address deployer = vm.envAddress("DEPLOYER_ADDRESS");
@@ -53,6 +68,8 @@ contract DeployAll is Script {
         console2.log("AssetRegistry:", address(assets));
 
         // 3. Register the backing asset (assetId = 1)
+        // The deployer grants itself ASSET_ADMIN_ROLE because only that role can register;
+        // it then registers with the deployer as issuer and a zero (informational) valuation.
         assets.grantRole(assets.ASSET_ADMIN_ROLE(), admin);
         uint256 assetId = assets.registerAsset(
             keccak256("asset-docs-v1"),
@@ -64,17 +81,13 @@ contract DeployAll is Script {
         console2.log("Asset registered, id:", assetId);
 
         // 4. Token wired to both registries (constructor validates assetId exists)
-        RWAToken token = new RWAToken(
-            "Real World Asset Token",
-            "RWA",
-            address(compliance),
-            address(assets),
-            assetId,
-            admin
-        );
+        RWAToken token =
+            new RWAToken("Real World Asset Token", "RWA", address(compliance), address(assets), assetId, admin);
         console2.log("RWAToken:", address(token));
 
         // 5. Role grants (admin keeps DEFAULT_ADMIN_ROLE on all three)
+        // Only granted when distinct from the admin, which already holds DEFAULT_ADMIN_ROLE
+        // and could grant them later; avoids redundant grantRole calls on a single-key deploy.
         if (officer != admin) {
             compliance.grantRole(compliance.COMPLIANCE_OFFICER_ROLE(), officer);
         }
