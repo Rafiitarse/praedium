@@ -11,6 +11,7 @@ import {
 import { formatUnits, isAddress, parseUnits } from 'viem';
 import { getContracts, isDeployed } from '@/lib/contracts';
 import { RWA_TOKEN_ABI, COMPLIANCE_REGISTRY_ABI } from '@/lib/abis';
+import { TransferHistory } from '@/components/TransferHistory';
 import {
   Badge,
   Button,
@@ -176,6 +177,8 @@ export function InvestorPanel() {
           />
         </div>
       </PanelCard>
+
+      <TransferHistory />
     </div>
   );
 }

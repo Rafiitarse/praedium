@@ -8,6 +8,7 @@ import { InvestorPanel } from '@/components/panels/InvestorPanel';
 import { IssuerPanel } from '@/components/panels/IssuerPanel';
 import { CompliancePanel } from '@/components/panels/CompliancePanel';
 import { AssetPanel } from '@/components/panels/AssetPanel';
+import { GlobalStats } from '@/components/GlobalStats';
 import { useRoles } from '@/lib/useRoles';
 import { isDeployed } from '@/lib/contracts';
 import { PanelCard } from '@/components/ui';
@@ -60,6 +61,8 @@ export default function Home() {
           </PanelCard>
         ) : (
           <div className="animate-fade-up space-y-6">
+            <GlobalStats />
+
             <nav className="flex flex-wrap gap-2" aria-label="Contract panels">
               {visibleTabs.map((t) => (
                 <button
