@@ -6,7 +6,7 @@ import {
   useWriteContract,
   useWaitForTransactionReceipt,
 } from 'wagmi';
-import { isAddress, parseUnits } from 'viem';
+import { isAddress, isHex, parseUnits } from 'viem';
 import { getContracts, isDeployed } from '@/lib/contracts';
 import { ASSET_REGISTRY_ABI } from '@/lib/abis';
 import {
@@ -36,7 +36,9 @@ function toUnix(local: string) {
   return Math.floor(new Date(local).getTime() / 1000);
 }
 
-const DOC_HASH_RE = /^0x[0-9a-fA-F]{64}$/;
+function isDocumentHash(value: string): value is `0x${string}` {
+  return isHex(value, { strict: true }) && value.length === 66;
+}
 
 export function AssetPanel() {
   const chainId = useChainId();
@@ -67,7 +69,7 @@ export function AssetPanel() {
   const txState = busy ? 'pending' : isSuccess ? 'success' : error ? 'error' : 'idle';
 
   function register() {
-    if (!contracts) return;
+    if (!contracts || !isDocumentHash(docHash) || !isAddress(issuer)) return;
     writeContract({
       address: contracts.assetRegistry,
       abi: ASSET_REGISTRY_ABI,
@@ -83,7 +85,7 @@ export function AssetPanel() {
   }
 
   function update() {
-    if (!contracts) return;
+    if (!contracts || !isDocumentHash(updateDocHash)) return;
     writeContract({
       address: contracts.assetRegistry,
       abi: ASSET_REGISTRY_ABI,
@@ -156,7 +158,7 @@ export function AssetPanel() {
               reset();
               register();
             }}
-            disabled={!DOC_HASH_RE.test(docHash) || !uri || !isAddress(issuer) || busy}
+            disabled={!isDocumentHash(docHash) || !uri || !isAddress(issuer) || busy}
           >
             {busy ? <Spinner /> : 'Register'}
           </Button>
@@ -219,7 +221,7 @@ export function AssetPanel() {
             }}
             disabled={
               !updateId ||
-              !DOC_HASH_RE.test(updateDocHash) ||
+              !isDocumentHash(updateDocHash) ||
               !updateUri ||
               busy
             }

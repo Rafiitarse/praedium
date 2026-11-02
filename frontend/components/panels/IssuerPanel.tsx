@@ -48,7 +48,7 @@ export function IssuerPanel() {
   const txState = busy ? 'pending' : isSuccess ? 'success' : error ? 'error' : 'idle';
 
   function mint() {
-    if (!contracts || !mintTo || !mintAmount) return;
+    if (!contracts || !isAddress(mintTo) || !mintAmount) return;
     writeContract({
       address: contracts.rwaToken,
       abi: RWA_TOKEN_ABI,
@@ -58,7 +58,7 @@ export function IssuerPanel() {
   }
 
   function burn() {
-    if (!contracts || !burnFrom || !burnAmount) return;
+    if (!contracts || !isAddress(burnFrom) || !burnAmount) return;
     writeContract({
       address: contracts.rwaToken,
       abi: RWA_TOKEN_ABI,

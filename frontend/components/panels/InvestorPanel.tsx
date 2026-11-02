@@ -80,7 +80,7 @@ export function InvestorPanel() {
   const txState = isPending || confirming ? 'pending' : isSuccess ? 'success' : error ? 'error' : 'idle';
 
   function submit() {
-    if (!contracts || !recipient || !amount) return;
+    if (!contracts || !validRecipient || !amount) return;
     writeContract({
       address: contracts.rwaToken,
       abi: RWA_TOKEN_ABI,

@@ -42,7 +42,7 @@ export function CompliancePanel() {
   const txState = busy ? 'pending' : isSuccess ? 'success' : error ? 'error' : 'idle';
 
   function verify() {
-    if (!contracts || !verifyAddress) return;
+    if (!contracts || !isAddress(verifyAddress)) return;
     const expiryUnix =
       expiry === NEVER ? 0 : Math.floor(new Date(expiry).getTime() / 1000);
     writeContract({
@@ -54,7 +54,7 @@ export function CompliancePanel() {
   }
 
   function revoke() {
-    if (!contracts || !revokeAddress) return;
+    if (!contracts || !isAddress(revokeAddress)) return;
     writeContract({
       address: contracts.complianceRegistry,
       abi: COMPLIANCE_REGISTRY_ABI,
@@ -64,7 +64,7 @@ export function CompliancePanel() {
   }
 
   function setFrozen(frozen: boolean) {
-    if (!contracts || !freezeAddress) return;
+    if (!contracts || !isAddress(freezeAddress)) return;
     writeContract({
       address: contracts.complianceRegistry,
       abi: COMPLIANCE_REGISTRY_ABI,
