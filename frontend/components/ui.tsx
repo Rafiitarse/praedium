@@ -25,9 +25,9 @@ type ButtonVariant = 'primary' | 'secondary' | 'danger';
 
 const buttonStyles: Record<ButtonVariant, string> = {
   primary:
-    'bg-gradient-to-r from-emerald-400 to-cyan-400 font-semibold text-slate-950 hover:shadow-glow hover:-translate-y-0.5 active:translate-y-0',
+    'bg-[#c9a978] font-semibold text-[#171b16] hover:bg-[#d8bc91] hover:-translate-y-0.5 active:translate-y-0',
   secondary:
-    'border border-white/10 bg-white/[0.04] text-slate-200 hover:bg-white/[0.08] hover:-translate-y-0.5 active:translate-y-0',
+    'border border-white/10 bg-white/[0.04] text-slate-200 hover:border-[#c9a978]/30 hover:bg-white/[0.08] hover:-translate-y-0.5 active:translate-y-0',
   danger:
     'border border-rose-500/30 bg-rose-500/10 text-rose-300 hover:bg-rose-500/20 hover:-translate-y-0.5 active:translate-y-0',
 };
@@ -48,7 +48,7 @@ export function Button({
 /* ── Inputs ── */
 
 const inputBase =
-  'w-full rounded-xl border border-white/10 bg-surface-2/80 px-4 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 transition-colors focus:border-emerald-400/50 focus:outline-none';
+  'w-full rounded-xl border border-white/10 bg-[#121914] px-4 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 transition-colors focus:border-[#c9a978]/60 focus:outline-none';
 
 export function TextInput({ className = '', ...props }: InputHTMLAttributes<HTMLInputElement>) {
   return <input className={`${inputBase} font-mono ${className}`} {...props} />;
@@ -118,9 +118,9 @@ export function StatCard({
   suffix?: string;
 }) {
   return (
-    <div className="glass-panel p-4">
-      <p className="text-xs font-medium uppercase tracking-wider text-slate-400">{label}</p>
-      <p className="mt-1 font-mono text-2xl font-bold text-slate-100">
+    <div className="glass-panel p-5 sm:p-6">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.17em] text-[#a8a99e]">{label}</p>
+      <p className="mt-3 font-mono text-2xl font-semibold tracking-tight text-[#f4f0e8]">
         {value}
         {suffix ? (
           <span className="ml-1 text-sm font-normal text-slate-400">{suffix}</span>
