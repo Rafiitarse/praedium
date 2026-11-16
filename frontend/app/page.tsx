@@ -33,52 +33,90 @@ export default function Home() {
 
   return (
     <div className="app-bg flex min-h-screen flex-col">
-      <header className="sticky top-0 z-20 border-b border-white/[0.06] bg-[#05070d]/80 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+      <header className="sticky top-0 z-20 border-b border-white/[0.08] bg-[#101814]/85 backdrop-blur-xl">
+        <div className="mx-auto flex w-full max-w-[1320px] items-center justify-between px-5 py-4 sm:px-8">
+          <a href="#home" className="flex items-center gap-3" aria-label="Praedium home">
+            <span className="flex size-10 items-center justify-center rounded-xl border border-[#c9a978]/30 bg-[#c9a978]/10 font-serif text-lg text-[#e4c99e]">P</span>
+            <span>
+              <span className="block text-[15px] font-semibold tracking-[0.12em] text-[#f4f0e8]">PRAEDIUM</span>
+              <span className="block text-[10px] uppercase tracking-[0.2em] text-[#a8a99e]">Real asset platform</span>
+            </span>
+          </a>
           <div className="flex items-center gap-3">
-            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-emerald-400 to-cyan-400 shadow-glow" />
-            <span className="text-lg font-semibold tracking-tight">Praedium</span>
+            <span className="hidden items-center gap-2 rounded-full border border-white/[0.09] bg-white/[0.04] px-3 py-2 text-xs text-[#b8b9af] sm:flex">
+              <span className={`size-1.5 rounded-full ${deployed ? 'bg-[#9bb69a]' : 'bg-[#c9a978]'}`} />
+              {deployed ? 'Sepolia network' : 'Network not ready'}
+            </span>
+            <WalletButton />
           </div>
-          <WalletButton />
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-10">
-        {!isConnected ? (
-          <PanelCard className="animate-fade-up mx-auto max-w-xl py-16 text-center">
-            <div className="mx-auto h-12 w-12 rounded-xl bg-gradient-to-br from-emerald-400 to-cyan-400 shadow-glow-lg" />
-            <h1 className="mt-6 text-2xl font-bold">Praedium</h1>
-            <p className="mt-2 text-slate-400">
-              Connect your wallet to interact with the RWA contracts.
+      <main id="home" className="mx-auto w-full max-w-[1320px] flex-1 px-5 pb-14 pt-8 sm:px-8 sm:pt-10">
+        <section className="dashboard-hero relative isolate flex min-h-[260px] items-end overflow-hidden rounded-[28px] border border-white/[0.08] px-6 py-7 sm:min-h-[310px] sm:px-10 sm:py-9">
+          <div className="relative z-10 max-w-2xl">
+            <p className="mb-3 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#d9bd91]">
+              <span className="h-px w-7 bg-[#d9bd91]" /> Real-world assets, thoughtfully managed
             </p>
+            <h1 className="max-w-xl font-serif text-4xl leading-[1.08] tracking-[-0.03em] text-[#f4f0e8] sm:text-5xl">
+              A more grounded way to invest.
+            </h1>
+            <p className="mt-4 max-w-lg text-sm leading-6 text-[#d5d3ca] sm:text-base">
+              Tokenized real estate with transparent ownership and compliance built in.
+            </p>
+          </div>
+          <div className="absolute right-8 top-8 hidden rounded-full border border-white/20 bg-black/20 px-4 py-2 text-[10px] uppercase tracking-[0.2em] text-white/75 backdrop-blur-md md:block">
+            Praedium · On-chain assets
+          </div>
+        </section>
+
+        <div className="mb-7 mt-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+          <div>
+            <p className="text-xs font-medium uppercase tracking-[0.2em] text-[#a8a99e]">Portfolio workspace</p>
+            <h2 className="mt-1 font-serif text-3xl tracking-tight text-[#f4f0e8]">Your dashboard</h2>
+          </div>
+          <p className="max-w-md text-sm leading-6 text-[#a8a99e]">A clear view of ownership, transfers, and compliance across the Praedium ecosystem.</p>
+        </div>
+
+        {!isConnected ? (
+          <PanelCard className="animate-fade-up flex flex-col items-start gap-6 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#c9a978]">Get started</p>
+              <h3 className="mt-2 font-serif text-2xl text-[#f4f0e8]">Connect your wallet</h3>
+              <p className="mt-2 max-w-xl text-sm leading-6 text-[#a8a99e]">Connect a wallet to view your balance, check your compliance status, and interact with the RWA contracts.</p>
+            </div>
+            <div className="hidden size-14 shrink-0 items-center justify-center rounded-2xl border border-[#c9a978]/20 bg-[#c9a978]/10 sm:flex">
+              <span className="font-serif text-2xl text-[#d9bd91]">P</span>
+            </div>
           </PanelCard>
         ) : !deployed ? (
-          <PanelCard className="animate-fade-up py-12 text-center">
-            <p className="text-slate-400">
-              Contracts are not deployed on this network. Switch to Sepolia where the
-              deployment lives.
-            </p>
+          <PanelCard className="animate-fade-up py-10">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#c9a978]">Network notice</p>
+            <h3 className="mt-2 font-serif text-2xl text-[#f4f0e8]">Switch to Sepolia</h3>
+            <p className="mt-2 text-sm leading-6 text-[#a8a99e]">Contracts are not deployed on this network. Use the wallet action above to switch to Sepolia, where the deployment lives.</p>
           </PanelCard>
         ) : (
           <div className="animate-fade-up space-y-6">
             <GlobalStats />
 
-            <nav className="flex flex-wrap gap-2" aria-label="Contract panels">
-              {visibleTabs.map((t) => (
-                <button
-                  key={t.id}
-                  onClick={() => setTab(t.id)}
-                  aria-current={activeTab === t.id}
-                  className={`rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200 ${
-                    activeTab === t.id
-                      ? 'bg-gradient-to-r from-emerald-400/20 to-cyan-400/20 text-emerald-300 shadow-glow'
-                      : 'border border-white/[0.06] bg-white/[0.02] text-slate-400 hover:bg-white/[0.05] hover:text-slate-200'
-                  }`}
-                >
-                  {t.label}
-                </button>
-              ))}
-            </nav>
+            <div className="border-b border-white/[0.09]">
+              <nav className="-mb-px flex gap-2 overflow-x-auto" aria-label="Contract panels">
+                {visibleTabs.map((t) => (
+                  <button
+                    key={t.id}
+                    onClick={() => setTab(t.id)}
+                    aria-current={activeTab === t.id ? 'page' : undefined}
+                    className={`shrink-0 border-b-2 px-4 py-3 text-sm font-medium transition-colors ${
+                      activeTab === t.id
+                        ? 'border-[#c9a978] text-[#e4c99e]'
+                        : 'border-transparent text-[#92978e] hover:text-[#e8e5dc]'
+                    }`}
+                  >
+                    {t.label}
+                  </button>
+                ))}
+              </nav>
+            </div>
 
             {activeTab === 'investor' ? <InvestorPanel /> : null}
             {activeTab === 'issuer' ? <IssuerPanel /> : null}
