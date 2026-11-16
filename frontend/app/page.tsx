@@ -65,28 +65,17 @@ export default function Home() {
               Tokenized real estate with transparent ownership and compliance built in.
             </p>
           </div>
-          <div className="absolute right-8 top-8 hidden rounded-full border border-white/20 bg-black/20 px-4 py-2 text-[10px] uppercase tracking-[0.2em] text-white/75 backdrop-blur-md md:block">
-            Praedium · On-chain assets
-          </div>
         </section>
 
-        <div className="mb-7 mt-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-          <div>
-            <p className="text-xs font-medium uppercase tracking-[0.2em] text-[#a8a99e]">Portfolio workspace</p>
-            <h2 className="mt-1 font-serif text-3xl tracking-tight text-[#f4f0e8]">Your dashboard</h2>
-          </div>
-          <p className="max-w-md text-sm leading-6 text-[#a8a99e]">A clear view of ownership, transfers, and compliance across the Praedium ecosystem.</p>
+        <div className="mb-6 mt-8 flex items-end justify-between">
+          <h2 className="font-serif text-3xl tracking-tight text-[#f4f0e8]">Portfolio overview</h2>
         </div>
 
         {!isConnected ? (
           <PanelCard className="animate-fade-up flex flex-col items-start gap-6 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#c9a978]">Get started</p>
-              <h3 className="mt-2 font-serif text-2xl text-[#f4f0e8]">Connect your wallet</h3>
-              <p className="mt-2 max-w-xl text-sm leading-6 text-[#a8a99e]">Connect a wallet to view your balance, check your compliance status, and interact with the RWA contracts.</p>
-            </div>
-            <div className="hidden size-14 shrink-0 items-center justify-center rounded-2xl border border-[#c9a978]/20 bg-[#c9a978]/10 sm:flex">
-              <span className="font-serif text-2xl text-[#d9bd91]">P</span>
+              <h3 className="font-serif text-2xl text-[#f4f0e8]">Your assets, in one place</h3>
+              <p className="mt-2 max-w-xl text-sm leading-6 text-[#a8a99e]">Connect your wallet to view your balance, eligibility, and asset activity.</p>
             </div>
           </PanelCard>
         ) : !deployed ? (
