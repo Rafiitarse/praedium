@@ -37,7 +37,7 @@ export function ContactFooter() {
   return (
     <footer className="border-t border-white/[0.06] px-6 py-8">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 sm:flex-row sm:justify-between">
-        <p className="text-sm text-slate-500">Built with Foundry &amp; Next.js</p>
+        <p className="text-sm text-slate-500">Praedium · Real assets, on-chain</p>
         <div className="flex flex-wrap items-center justify-center gap-2">
           {links.map((link) => (
             <a
